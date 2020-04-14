@@ -24,6 +24,12 @@ var (
     Shorthand:   "m",
     Description: "[required]main entrance file name",
   }
+  FlagOutputFile = flagInfoString{
+    Name:        "output",
+    Shorthand:   "o",
+    Description: "output name",
+    Default:     "",
+  }
   FlagGO111MODULE = flagInfoString{
     Name:        "go111",
     Shorthand:   "g",

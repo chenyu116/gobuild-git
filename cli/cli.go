@@ -15,7 +15,7 @@ var (
 )
 
 func Start() {
-  fmt.Printf("gobuild-git Version: %s, Branch: %s, Build: %s, Build time: %s\n",
+  fmt.Printf("gobuild-git Version: %s, Branch: %s, Build: %s, Build time: %s\n\n",
     _version_, _branch_, _commitId_, _buildTime_)
   if err := Run(os.Args[1:]); err != nil {
     fmt.Fprintf(os.Stderr, "Failed running %q\n", os.Args[1])

@@ -15,6 +15,7 @@ import (
 
 var (
   mainFileName  string
+  outputFile    string
   GO111MODULE   string
   importPath    string
   versionName   string
@@ -83,6 +84,7 @@ func init() {
   flags := startCmd.Flags()
 
   stringFlag(flags, &mainFileName, FlagMainFileName)
+  stringFlag(flags, &outputFile, FlagOutputFile)
   stringFlag(flags, &GO111MODULE, FlagGO111MODULE)
   stringFlag(flags, &importPath, FlagImportPath)
   stringFlag(flags, &versionName, FlagVersionName)
@@ -103,6 +105,7 @@ func runStart(cmd *cobra.Command, args []string) error {
   if exists("./go.mod") {
     GO111MODULE = "on"
   }
+
   var e *exec.Cmd
   var out []byte
   var err error
@@ -162,8 +165,12 @@ func runStart(cmd *cobra.Command, args []string) error {
     }
     ldFlagsArray = append(ldFlagsArray, fmt.Sprintf("-X %s.%s%s%s", importPath, v, separator, values[v]))
   }
+  output := ""
+  if outputFile != "" {
+    output = fmt.Sprintf("-o %s", outputFile)
+  }
 
-  e = exec.Command("sh", "-c", fmt.Sprintf(`GO111MODULE=%s go build -ldflags "%s" %s`, GO111MODULE,
+  e = exec.Command("sh", "-c", fmt.Sprintf(`GO111MODULE=%s go build %s -ldflags "%s" %s`, GO111MODULE, output,
     strings.Join(ldFlagsArray,
       " "), mainFileName))
   //fmt.Println(e.String())
@@ -171,6 +178,6 @@ func runStart(cmd *cobra.Command, args []string) error {
   if err != nil {
     log.Fatal(err)
   }
-  fmt.Printf("build success! use: %s\n" , time.Now().Sub(startTime).String())
+  fmt.Printf("build success! use: %s\n", time.Now().Sub(startTime).String())
   return nil
 }
