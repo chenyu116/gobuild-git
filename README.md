@@ -1,2 +1,4 @@
 # gobuild-git
-build program with git infomation
+build program version with git information
+
+not support windows
